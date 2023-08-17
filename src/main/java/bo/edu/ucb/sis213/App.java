@@ -93,7 +93,8 @@ public class App {
             System.out.println("2. Realizar un depósito.");
             System.out.println("3. Realizar un retiro.");
             System.out.println("4. Cambiar PIN.");
-            System.out.println("5. Salir.");
+            System.out.println("5. Cambiar Alias.");
+            System.out.println("6. Salir.");
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();
 
@@ -111,6 +112,9 @@ public class App {
                     cambiarPIN();
                     break;
                 case 5:
+                    cambiarAlias();
+                    break;
+                case 6:
                     System.out.println("Gracias por usar el cajero. ¡Hasta luego!");
                     System.exit(0);
                     break;
@@ -257,6 +261,28 @@ public class App {
             }
         } else {
             System.out.println("PIN incorrecto.");
+        }
+    }
+
+    public static void cambiarAlias() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Ingrese su nuevo Alias: ");
+        String nuevoAlias = scanner.nextLine();
+    
+        // Actualizar el alias en la base de datos
+        try {
+            Connection connection = getConnection();
+            String updateQuery = "UPDATE usuarios SET alias = ? WHERE id = ?";
+            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+            updateStatement.setString(1, nuevoAlias);
+            updateStatement.setInt(2, usuarioId);
+            updateStatement.executeUpdate();
+            connection.close();
+            
+            System.out.println("Alias actualizado con éxito: "+ nuevoAlias );
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Error al actualizar el alias en la base de datos.");
         }
     }
 }
