@@ -44,7 +44,7 @@ public class ATMApp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int entradaPin = Integer.parseInt(new String(pinField.getPassword()));
-                boolean entrada = validarPin(entradaPin);
+                boolean entrada = validarPIN(entradaPin);
 
                 if (entrada) {
                     showMainMenu();
@@ -128,12 +128,8 @@ public class ATMApp {
             public void actionPerformed(ActionEvent e) {
                 String nuevoAlias = JOptionPane.showInputDialog(frame, "Ingrese su nuevo alias:");
                 String confirmarNuevoAlias = JOptionPane.showInputDialog(frame, "Confirme su nuevo alias:");
-                if(nuevoAlias == confirmarNuevoAlias){
-                    cambiarAlias(nuevoAlias);
-                    JOptionPane.showMessageDialog(frame, "Su alias se actualizó con éxito: "+nuevoAlias);
-                }else{
-                    JOptionPane.showMessageDialog(frame, "Los campos de alias ingresados NO coinciden");
-                }
+                cambiarAlias(nuevoAlias);
+                JOptionPane.showMessageDialog(frame, "Su alias se actualizó con éxito: "+nuevoAlias);
             }
         });
 
