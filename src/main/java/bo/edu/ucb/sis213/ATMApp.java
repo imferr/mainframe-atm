@@ -8,10 +8,10 @@ public class ATMApp {
 
     // Frame para las pantallas
     private JFrame frame;
+    private App atm;
 
     // Componentes para la pantalla de login
     private JPanel loginPanel;
-    private JTextField userField;
     private JPasswordField pinField;
     private JButton loginButton;
 
@@ -29,7 +29,7 @@ public class ATMApp {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
 
-        atmConector = new App(); //Aquí está la instancia de la lógica del cajero
+        atm = new App(); //Aquí está la instancia de la lógica del cajero
 
         initLoginScreen();
 
@@ -44,7 +44,7 @@ public class ATMApp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int entradaPin = Integer.parseInt(new String(pinField.getPassword()));
-                boolean entrada = validarPIN(entradaPin);
+                boolean entrada = atm.validarPIN(entradaPin);
 
                 if (entrada) {
                     showMainMenu();
@@ -78,8 +78,8 @@ public class ATMApp {
         botonConsutaSaldo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double saldo = consultarSaldo(); //consulto el saldo de la bdd
-                JOptionPane.showMessageDialog(frame, "Su saldo actual es: $" + saldo);
+                //double saldo = atm.consultarSaldo(); //consulto el saldo de la bdd
+                JOptionPane.showMessageDialog(frame, "Su saldo actual es: $" + atm.consultarSaldo());
             }
         });
 
@@ -88,8 +88,8 @@ public class ATMApp {
             public void actionPerformed(ActionEvent e) {
                 double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a depositar: $"));
                 if (cantidad > 0){
-                    realizarDeposito(cantidad);
-                    JOptionPane.showMessageDialog(frame, "Su deposito se realizó con éxito, su saldo actual es de: $"+ consultarSaldo());
+                    atm.realizarDeposito(cantidad);
+                    JOptionPane.showMessageDialog(frame, "Su deposito se realizó con éxito, su saldo actual es de: $"+ atm.consultarSaldo());
                 }else{
                     JOptionPane.showMessageDialog(frame, "Su deposito NO se pudo realizar");
                 }
@@ -100,9 +100,9 @@ public class ATMApp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a retirar: $"));
-                if(cantidad>0 && cantidad<=consultarSaldo()){
-                    realizarRetiro(cantidad);
-                    JOptionPane.showMessageDialog(frame, "Su retiro se realizó con éxito, su saldo actual es de: $"+ consultarSaldo());
+                if(cantidad>0 && cantidad<=atm.consultarSaldo()){
+                    atm.realizarRetiro(cantidad);
+                    JOptionPane.showMessageDialog(frame, "Su retiro se realizó con éxito, su saldo actual es de: $"+ atm.consultarSaldo());
                 }else{
                     JOptionPane.showMessageDialog(frame, "Su retiro NO se pudo realizar");
                 }
@@ -115,7 +115,7 @@ public class ATMApp {
                 int nuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Ingrese su nuevo PIN:"));
                 int confirmarNuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirme su nuevo PIN:"));
                 if(nuevoPin == confirmarNuevoPin){
-                    cambiarPin(nuevoPin);
+                    atm.cambiarPIN(nuevoPin);
                     JOptionPane.showMessageDialog(frame, "Su PIN se actualizó con éxito");
                 }else{
                     JOptionPane.showMessageDialog(frame, "Los campos de PIN ingresados NO coinciden");
@@ -128,7 +128,7 @@ public class ATMApp {
             public void actionPerformed(ActionEvent e) {
                 String nuevoAlias = JOptionPane.showInputDialog(frame, "Ingrese su nuevo alias:");
                 String confirmarNuevoAlias = JOptionPane.showInputDialog(frame, "Confirme su nuevo alias:");
-                cambiarAlias(nuevoAlias);
+                atm.cambiarAlias(nuevoAlias);
                 JOptionPane.showMessageDialog(frame, "Su alias se actualizó con éxito: "+nuevoAlias);
             }
         });
