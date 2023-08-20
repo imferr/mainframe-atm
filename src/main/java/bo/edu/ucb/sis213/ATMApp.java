@@ -8,7 +8,6 @@ public class ATMApp {
 
     // Frame para las pantallas
     private JFrame frame;
-    private App atmConector;
 
     // Componentes para la pantalla de login
     private JPanel loginPanel;
@@ -18,12 +17,12 @@ public class ATMApp {
 
     // Componentes para el menú principal
     private JPanel mainMenuPanel;
-    private JButton checkBalanceButton;
-    private JButton depositButton;
-    private JButton withdrawButton;
-    private JButton changePinButton;
-    private JButton changeAliasButton;
-    private JButton exitButton;
+    private JButton botonConsutaSaldo;
+    private JButton botonDeposito;
+    private JButton botonRetiro;
+    private JButton botonCambiarPin;
+    private JButton botonCambiarAlias;
+    private JButton botonSalir;
 
     public ATMApp() {
         frame = new JFrame("Aplicación de simulación de ATM");
@@ -45,7 +44,7 @@ public class ATMApp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int entradaPin = Integer.parseInt(new String(pinField.getPassword()));
-                boolean entrada = atmConector.validarPin(entradaPin);
+                boolean entrada = validarPin(entradaPin);
 
                 if (entrada) {
                     showMainMenu();
@@ -68,62 +67,89 @@ public class ATMApp {
 
         mainMenuPanel = new JPanel(new GridLayout(6, 1));
 
-        checkBalanceButton = new JButton("Consultar saldo");
-        depositButton = new JButton("Realizar un depósito");
-        withdrawButton = new JButton("Realizar un retiro");
-        changePinButton = new JButton("Cambiar PIN");
-        changeAliasButton = new JButton("Cambiar Alias");
-        exitButton = new JButton("Salir");
+        botonConsutaSaldo = new JButton("Consultar saldo");
+        botonDeposito = new JButton("Realizar un depósito");
+        botonRetiro = new JButton("Realizar un retiro");
+        botonCambiarPin = new JButton("Cambiar PIN");
+        botonCambiarAlias = new JButton("Cambiar Alias");
+        botonSalir = new JButton("Salir");
 
         // Agregar acciones a los botones
-        checkBalanceButton.addActionListener(new ActionListener() {
+        botonConsutaSaldo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes implementar la lógica para consultar el saldo
+                double saldo = consultarSaldo(); //consulto el saldo de la bdd
+                JOptionPane.showMessageDialog(frame, "Su saldo actual es: $" + saldo);
             }
         });
 
-        depositButton.addActionListener(new ActionListener() {
+        botonDeposito.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes implementar la lógica para realizar un depósito
+                double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a depositar: $"));
+                if (cantidad > 0){
+                    realizarDeposito(cantidad);
+                    JOptionPane.showMessageDialog(frame, "Su deposito se realizó con éxito, su saldo actual es de: $"+ consultarSaldo());
+                }else{
+                    JOptionPane.showMessageDialog(frame, "Su deposito NO se pudo realizar");
+                }
             }
         });
 
-        withdrawButton.addActionListener(new ActionListener() {
+        botonRetiro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes implementar la lógica para realizar un retiro
+                double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a retirar: $"));
+                if(cantidad>0 && cantidad<=consultarSaldo()){
+                    realizarRetiro(cantidad);
+                    JOptionPane.showMessageDialog(frame, "Su retiro se realizó con éxito, su saldo actual es de: $"+ consultarSaldo());
+                }else{
+                    JOptionPane.showMessageDialog(frame, "Su retiro NO se pudo realizar");
+                }
             }
         });
 
-        changePinButton.addActionListener(new ActionListener() {
+        botonCambiarPin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes implementar la lógica para cambiar el PIN
+                int nuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Ingrese su nuevo PIN:"));
+                int confirmarNuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirme su nuevo PIN:"));
+                if(nuevoPin == confirmarNuevoPin){
+                    cambiarPin(nuevoPin);
+                    JOptionPane.showMessageDialog(frame, "Su PIN se actualizó con éxito");
+                }else{
+                    JOptionPane.showMessageDialog(frame, "Los campos de PIN ingresados NO coinciden");
+                }
             }
         });
 
-        changeAliasButton.addActionListener(new ActionListener() {
+        botonCambiarAlias.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes implementar la lógica para cambiar el alias
+                String nuevoAlias = JOptionPane.showInputDialog(frame, "Ingrese su nuevo alias:");
+                String confirmarNuevoAlias = JOptionPane.showInputDialog(frame, "Confirme su nuevo alias:");
+                if(nuevoAlias == confirmarNuevoAlias){
+                    cambiarAlias(nuevoAlias);
+                    JOptionPane.showMessageDialog(frame, "Su alias se actualizó con éxito: "+nuevoAlias);
+                }else{
+                    JOptionPane.showMessageDialog(frame, "Los campos de alias ingresados NO coinciden");
+                }
             }
         });
 
-        exitButton.addActionListener(new ActionListener() {
+        botonSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
 
-        mainMenuPanel.add(checkBalanceButton);
-        mainMenuPanel.add(depositButton);
-        mainMenuPanel.add(withdrawButton);
-        mainMenuPanel.add(changePinButton);
-        mainMenuPanel.add(changeAliasButton);
-        mainMenuPanel.add(exitButton);
+        mainMenuPanel.add(botonConsutaSaldo);
+        mainMenuPanel.add(botonDeposito);
+        mainMenuPanel.add(botonRetiro);
+        mainMenuPanel.add(botonCambiarPin);
+        mainMenuPanel.add(botonCambiarAlias);
+        mainMenuPanel.add(botonSalir);
 
         frame.add(mainMenuPanel);
         frame.revalidate();
