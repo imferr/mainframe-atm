@@ -8,6 +8,7 @@ public class ATMApp {
 
     // Frame para las pantallas
     private JFrame frame;
+    private App atmConector;
 
     // Componentes para la pantalla de login
     private JPanel loginPanel;
@@ -25,11 +26,12 @@ public class ATMApp {
     private JButton exitButton;
 
     public ATMApp() {
-        frame = new JFrame("ATM App");
+        frame = new JFrame("Aplicación de simulación de ATM");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
 
-        // Inicializar la pantalla de login
+        atmConector = new App(); //Aquí está la instancia de la lógica del cajero
+
         initLoginScreen();
 
         frame.setVisible(true);
@@ -37,23 +39,23 @@ public class ATMApp {
 
     private void initLoginScreen() {
         loginPanel = new JPanel(new GridLayout(3, 2));
-
-        userField = new JTextField();
         pinField = new JPasswordField();
-
         loginButton = new JButton("Ingresar");
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes agregar una validación de las credenciales
-                // Por ahora solo mostraremos el menú principal al presionar el botón
-                showMainMenu();
+                int entradaPin = Integer.parseInt(new String(pinField.getPassword()));
+                boolean entrada = atmConector.validarPin(entradaPin);
+
+                if (entrada) {
+                    showMainMenu();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "PIN incorrecto, intente de nuevo");
+                }
             }
         });
 
-        loginPanel.add(new JLabel("Usuario:"));
-        loginPanel.add(userField);
-        loginPanel.add(new JLabel("PIN:"));
+        loginPanel.add(new JLabel("Ingrese su PIN de 4 dígitos:"));
         loginPanel.add(pinField);
         loginPanel.add(new JLabel());
         loginPanel.add(loginButton);
