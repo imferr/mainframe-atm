@@ -1,15 +1,14 @@
 package bo.edu.ucb.sis213.view_atm;
 
+import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import bo.edu.ucb.sis213.database_access.ATMDatabaseAccess;
+import bo.edu.ucb.sis213.bussines_logic.ATMDatabaseAccess;
+import bo.edu.ucb.sis213.bussines_logic.ATMLogicButtons;
 
 public class ATMButtons {
     private JPanel mainMenuPanel;
@@ -19,92 +18,38 @@ public class ATMButtons {
     private JButton botonCambiarPin;
     private JButton botonCambiarAlias;
     private JButton botonSalir;
+    private ATMLogicButtons atmLogicButtons;
 
     public ATMButtons(JFrame frame, ATMDatabaseAccess atmDatabaseAccess) {
         mainMenuPanel = new JPanel(new GridLayout(6, 1));
+        mainMenuPanel.setBackground(new Color(240, 240, 240));
+        atmLogicButtons = new ATMLogicButtons(frame, atmDatabaseAccess); //llamo a la clase atmLogicButtons como controlador
 
+        //opciones del menú
         botonConsutaSaldo = new JButton("Consultar Saldo");
-        botonDeposito = new JButton("Realizar Depósito");
+        botonDeposito = new JButton("Realizar Deposito");
         botonRetiro = new JButton("Realizar Retiro");
         botonCambiarPin = new JButton("Cambiar PIN");
         botonCambiarAlias = new JButton("Cambiar Alias");
         botonSalir = new JButton("Salir");
 
         //accion del boton de consulta de saldo
-        botonConsutaSaldo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //double saldo = atmDatabaseAccess.obtenerSaldo();
-                atmDatabaseAccess.mostrarMensaje("Su saldo actual es: $" + atmDatabaseAccess.obtenerSaldo());
-            }
-        });
+        botonConsutaSaldo.addActionListener(e -> atmLogicButtons.consultarSaldo()); //esto hace que las funciones que hay en la logica de los botones sean llamadas con el action
 
         //accion del boton de deposito
-        botonDeposito.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a depositar: $"));
-                if (cantidad > 0){
-                    atmDatabaseAccess.realizarDeposito(cantidad);
-                    atmDatabaseAccess.mostrarMensaje("Su depósito se realizó con éxito, su saldo actual es de: $" + atmDatabaseAccess.obtenerSaldo());
-                } else {
-                    atmDatabaseAccess.mostrarMensaje("Su depósito NO se pudo realizar");
-                }
-            }
-        });
+        botonDeposito.addActionListener(e -> atmLogicButtons.realizarDeposito());
 
         //accion del boton de retiro
-        botonRetiro.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a retirar: $"));
-                if(cantidad>0 && cantidad<=atmDatabaseAccess.obtenerSaldo()){
-                    atmDatabaseAccess.realizarRetiro(cantidad);
-                    atmDatabaseAccess.mostrarMensaje("Su retiro se realizó con éxito, su saldo actual es de: $" + atmDatabaseAccess.obtenerSaldo());
-                }else{
-                    atmDatabaseAccess.mostrarMensaje("Su retiro NO se pudo realizar");
-                }
-            }
-        });
+        botonRetiro.addActionListener(e -> atmLogicButtons.realizarRetiro());
 
         //accion del boton cambiar pin
-        botonCambiarPin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int nuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Ingrese su nuevo PIN:"));
-                int confirmarNuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirme su nuevo PIN:"));
-                if(nuevoPin == confirmarNuevoPin){
-                    atmDatabaseAccess.cambiarPIN(nuevoPin);
-                    atmDatabaseAccess.mostrarMensaje("Su PIN se actualizó con éxito");
-                }else{
-                    atmDatabaseAccess.mostrarMensaje("Los campos de PIN ingresados NO coinciden");
-                }
-            }
-        });
+        botonCambiarPin.addActionListener(e -> atmLogicButtons.cambiarPIN());
 
         //accion boton cambiar alias
-        botonCambiarAlias.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String nuevoAlias = JOptionPane.showInputDialog(frame, "Ingrese su nuevo alias:");
-                String confirmarNuevoAlias = JOptionPane.showInputDialog(frame, "Confirme su nuevo alias:");
-                
-                if (nuevoAlias != null && confirmarNuevoAlias != null && nuevoAlias.equals(confirmarNuevoAlias)) {
-                    atmDatabaseAccess.cambiarAlias(nuevoAlias);
-                    atmDatabaseAccess.mostrarMensaje("Su alias se actualizó con éxito: " + nuevoAlias);
-                } else {
-                    atmDatabaseAccess.mostrarMensaje("Los alias ingresados no coinciden o están vacíos");
-                }
-            }
-        });
+        botonCambiarAlias.addActionListener(e -> atmLogicButtons.cambiarAlias());
 
         //accion boton salir
-        botonSalir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        botonSalir.addActionListener(e -> atmLogicButtons.salir());
 
         //agrego los botones al panel
         mainMenuPanel.add(botonConsutaSaldo);
@@ -116,6 +61,6 @@ public class ATMButtons {
     }
 
     public JPanel obtenerMainMenuPanel() {
-        return mainMenuPanel;
+        return mainMenuPanel;   //devuelvo el menu
     }
 }

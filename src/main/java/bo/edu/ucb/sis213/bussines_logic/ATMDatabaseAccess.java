@@ -1,8 +1,8 @@
-package bo.edu.ucb.sis213.database_access;
+package bo.edu.ucb.sis213.bussines_logic;
 
 import javax.swing.JOptionPane;
 
-import bo.edu.ucb.sis213.bussines_logic.ATMBussinesLogic;
+import bo.edu.ucb.sis213.database_access.ATMBussinesLogic;
 
 public class ATMDatabaseAccess {
     private ATMBussinesLogic atmbBussinesLogic;
@@ -11,6 +11,10 @@ public class ATMDatabaseAccess {
         this.atmbBussinesLogic = atmBussinesLogic;
     }
 
+    //validación del alias o usuario
+    public boolean validarUser(String usuario, int pin) {
+        return ATMBussinesLogic.validarUser(usuario, pin);
+    }
     //Validación de pin con el atmBussinessLogic
     public boolean ingresarPIN(int pin) {
         return ATMBussinesLogic.validarPIN(pin);

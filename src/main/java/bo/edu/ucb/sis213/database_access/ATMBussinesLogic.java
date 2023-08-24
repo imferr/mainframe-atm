@@ -1,4 +1,4 @@
-package bo.edu.ucb.sis213.bussines_logic;
+package bo.edu.ucb.sis213.database_access;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,6 +29,25 @@ public class ATMBussinesLogic {
         }
 
         return DriverManager.getConnection(jdbcUrl, USER, PASSWORD);
+    }
+
+    public static boolean validarUser(String usuario, int pin) {
+        String query = "SELECT id, saldo FROM usuarios WHERE alias = ? AND pin = ?";
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setString(1, usuario);
+            preparedStatement.setInt(2, pin);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                usuarioId = resultSet.getInt("id");
+                saldo = resultSet.getDouble("saldo");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static boolean validarPIN(int pin) {
