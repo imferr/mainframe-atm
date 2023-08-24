@@ -46,6 +46,12 @@ Desarrollar un programa interactivo en línea de comandos que simule las operaci
 7. **Salir**:
     * Mostrar un mensaje de despedida y cerrar el programa.
 
+## Arquitectura
+
+El software tiene una arquitectura donde se tiene las capas:
+ - view: Capa de presentación
+ - bussines_logic: Capa de lógica de negocios
+ - dao: Capa de acceso a datos
 
 
 ## Requerimientos
@@ -68,7 +74,7 @@ mvn clean install
 ## Ejecución
 
 ```
-mvn exec:java -Dexec.mainClass="bo.edu.ucb.sis213.App"
+mvn exec:java -Dexec.mainClass="bo.edu.ucb.sis213.App" o mvn exec:java
 ```
 
 ## Instalación de la Base de Datos
@@ -76,7 +82,7 @@ mvn exec:java -Dexec.mainClass="bo.edu.ucb.sis213.App"
 1. Hacer correr una instancia MySQL en docker
 
 ```
-docker run --name mysql-atm -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql:8
+docker run --name mysql-atm -e MYSQL_ROOT_PASSWORD=123456 -p 3307:3306 -d mysql:8
 ```
 
 2. Me conecto a la BBDD (Le pedira password es 123456)

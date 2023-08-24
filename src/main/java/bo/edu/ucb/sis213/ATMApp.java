@@ -1,10 +1,14 @@
 package bo.edu.ucb.sis213;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
-public class ATMApp {
+//import bo.edu.ucb.sis213.bussines_logic.ATMBussinesLogic;
+import bo.edu.ucb.sis213.view_atm.ATMView;
+
+//import java.awt.*;
+//import java.awt.event.*;
+
+public class ATMApp {/* 
 
     // Frame para las pantallas
     private JFrame frame;
@@ -150,13 +154,13 @@ public class ATMApp {
         frame.add(mainMenuPanel);
         frame.revalidate();
         frame.repaint();
-    }
+    }*/
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ATMApp();
+                new ATMView();
             }
         });
     }
