@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import bo.edu.ucb.sis213.bussines_logic.ATMDatabaseAccess;
+import bo.edu.ucb.sis213.bussines_logic.ATMBuLog;
 import bo.edu.ucb.sis213.bussines_logic.ATMLogicButtons;
 
 public class ATMButtons {
@@ -20,10 +20,10 @@ public class ATMButtons {
     private JButton botonSalir;
     private ATMLogicButtons atmLogicButtons;
 
-    public ATMButtons(JFrame frame, ATMDatabaseAccess atmDatabaseAccess) {
+    public ATMButtons(JFrame frame, ATMBuLog atmBuLog) {
         mainMenuPanel = new JPanel(new GridLayout(6, 1));
         mainMenuPanel.setBackground(new Color(240, 240, 240));
-        atmLogicButtons = new ATMLogicButtons(frame, atmDatabaseAccess); //llamo a la clase atmLogicButtons como controlador
+        atmLogicButtons = new ATMLogicButtons(frame, atmBuLog); //llamo a la clase atmLogicButtons como controlador
 
         //opciones del menú
         botonConsutaSaldo = new JButton("Consultar Saldo");

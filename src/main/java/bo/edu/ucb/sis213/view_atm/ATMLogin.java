@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import bo.edu.ucb.sis213.bussines_logic.ATMDatabaseAccess;
+import bo.edu.ucb.sis213.bussines_logic.ATMBuLog;
 
 public class ATMLogin {
     
@@ -21,11 +21,11 @@ public class ATMLogin {
     private JPasswordField pinField;
     private JButton loginButton;
 
-    public ATMLogin(JFrame frame, ATMDatabaseAccess atmDatabaseAccess) {
-        iniciarLogin(frame, atmDatabaseAccess);
+    public ATMLogin(JFrame frame, ATMBuLog atmBuLog) {
+        iniciarLogin(frame, atmBuLog);
     }
 
-    private void iniciarLogin(JFrame frame, ATMDatabaseAccess atmDatabaseAccess) {
+    private void iniciarLogin(JFrame frame, ATMBuLog atmBuLog) {
         loginPanel = new JPanel(new GridLayout(4, 2));
         userField = new JTextField();
         pinField = new JPasswordField();
@@ -36,12 +36,12 @@ public class ATMLogin {
             public void actionPerformed(ActionEvent e) {
                 String usuario = userField.getText();
                 int entradaPin = Integer.parseInt(new String(pinField.getPassword()));
-                boolean entrada = atmDatabaseAccess.validarUser(usuario, entradaPin);
+                boolean entrada = atmBuLog.validarUser(usuario, entradaPin);
 
                 if (entrada) {
-                    showMainMenu(frame, atmDatabaseAccess);
+                    showMainMenu(frame, atmBuLog);
                 } else {
-                    atmDatabaseAccess.mostrarMensaje("Usuario o PIN incorrecto, intente de nuevo");
+                    atmBuLog.mostrarMensaje("Usuario o PIN incorrecto, intente de nuevo");
                 }
             }
         });
@@ -59,9 +59,9 @@ public class ATMLogin {
         frame.repaint();
     }
 
-    private void showMainMenu(JFrame frame, ATMDatabaseAccess atmDatabaseAccess) {
+    private void showMainMenu(JFrame frame, ATMBuLog atmBuLog) {
         frame.remove(loginPanel); //retiro la pagina del login
-        ATMButtons atmButtons = new ATMButtons(frame, atmDatabaseAccess);
+        ATMButtons atmButtons = new ATMButtons(frame, atmBuLog);
         frame.add(atmButtons.obtenerMainMenuPanel());
         frame.revalidate();
         frame.repaint();

@@ -5,37 +5,37 @@ import javax.swing.JOptionPane;
 
 public class ATMLogicButtons {
     private JFrame frame;
-    private ATMDatabaseAccess atmDatabaseAccess;
+    private ATMBuLog atmBuLog;
 
-    public ATMLogicButtons(JFrame frame, ATMDatabaseAccess atmDatabaseAccess) {
+    public ATMLogicButtons(JFrame frame, ATMBuLog atmBuLog) {
         this.frame = frame;
-        this.atmDatabaseAccess = atmDatabaseAccess;
+        this.atmBuLog = atmBuLog;
     }
     
     //logica de negocio de la consulta de saldo
     public void consultarSaldo() {
-        atmDatabaseAccess.mostrarMensaje("Su saldo actual es: $" + atmDatabaseAccess.obtenerSaldo());
+        atmBuLog.mostrarMensaje("Su saldo actual es: $" + atmBuLog.obtenerSaldo());
     }
 
     //logica de negocio de realizar un deposito
     public void realizarDeposito() {
         double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a depositar: $"));
         if (cantidad > 0) {
-            atmDatabaseAccess.realizarDeposito(cantidad);
-            atmDatabaseAccess.mostrarMensaje("Su deposito se realizo con exito, su saldo actual es de: $" + atmDatabaseAccess.obtenerSaldo());
+            atmBuLog.realizarDeposito(cantidad);
+            atmBuLog.mostrarMensaje("Su deposito se realizo con exito, su saldo actual es de: $" + atmBuLog.obtenerSaldo());
         } else {
-            atmDatabaseAccess.mostrarMensaje("Su deposito NO se pudo realizar");
+            atmBuLog.mostrarMensaje("Su deposito NO se pudo realizar");
         }
     }
 
     //logica de negocio de realizar un retiro
      public void realizarRetiro() {
         double cantidad = Double.parseDouble(JOptionPane.showInputDialog(frame, "Ingrese el monto a retirar: $"));
-        if(cantidad>0 && cantidad<=atmDatabaseAccess.obtenerSaldo()){
-            atmDatabaseAccess.realizarRetiro(cantidad);
-            atmDatabaseAccess.mostrarMensaje("Su retiro se realizo con exito, su saldo actual es de: $" + atmDatabaseAccess.obtenerSaldo());
+        if(cantidad>0 && cantidad<=atmBuLog.obtenerSaldo()){
+            atmBuLog.realizarRetiro(cantidad);
+            atmBuLog.mostrarMensaje("Su retiro se realizo con exito, su saldo actual es de: $" + atmBuLog.obtenerSaldo());
         }else{
-            atmDatabaseAccess.mostrarMensaje("Su retiro NO se pudo realizar");
+            atmBuLog.mostrarMensaje("Su retiro NO se pudo realizar");
         }
      }
 
@@ -44,10 +44,10 @@ public class ATMLogicButtons {
         int nuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Ingrese su nuevo PIN:"));
         int confirmarNuevoPin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirme su nuevo PIN:"));
         if(nuevoPin == confirmarNuevoPin){
-            atmDatabaseAccess.cambiarPIN(nuevoPin);
-            atmDatabaseAccess.mostrarMensaje("Su PIN se actualizo con exito");
+            atmBuLog.cambiarPIN(nuevoPin);
+            atmBuLog.mostrarMensaje("Su PIN se actualizo con exito");
         }else{
-            atmDatabaseAccess.mostrarMensaje("Los campos de PIN ingresados NO coinciden");
+            atmBuLog.mostrarMensaje("Los campos de PIN ingresados NO coinciden");
         }
      }
 
@@ -57,10 +57,10 @@ public class ATMLogicButtons {
         String confirmarNuevoAlias = JOptionPane.showInputDialog(frame, "Confirme su nuevo alias:");
         
         if (nuevoAlias != null && confirmarNuevoAlias != null && nuevoAlias.equals(confirmarNuevoAlias)) {
-            atmDatabaseAccess.cambiarAlias(nuevoAlias);
-            atmDatabaseAccess.mostrarMensaje("Su alias se actualizo con exito: " + nuevoAlias);
+            atmBuLog.cambiarAlias(nuevoAlias);
+            atmBuLog.mostrarMensaje("Su alias se actualizo con exito: " + nuevoAlias);
         } else {
-            atmDatabaseAccess.mostrarMensaje("Los alias ingresados no coinciden o estan vacios");
+            atmBuLog.mostrarMensaje("Los alias ingresados no coinciden o estan vacios");
         }
      }
 
